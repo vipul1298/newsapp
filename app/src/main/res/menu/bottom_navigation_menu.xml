@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    //Bottom navigation
+
+    <item android:id="@+id/topHeadlinesFragment" android:title="Top-Headlines"
+        android:icon="@drawable/ic_baseline_bolt_24"/>
+
+    <item android:id="@+id/sourceFragment" android:title="Sources"
+        android:icon="@drawable/ic_baseline_source_24"/>
+    <item android:id="@+id/searchNewsFragment" android:title="Search News"
+        android:icon="@drawable/ic_baseline_search_24"/>
+
+</menu>
