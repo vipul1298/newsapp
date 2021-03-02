@@ -1,8 +1,10 @@
 package com.example.newsapp.views
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebViewClient
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.example.newsapp.MainActivity
@@ -27,4 +29,11 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
         }
 
     }
+
+//    fun openCustomTab(url:String){
+//        val builder : CustomTabsIntent.Builder  = CustomTabsIntent.Builder()
+//        val customTabsIntent : CustomTabsIntent = builder.build()
+//        context?.let { customTabsIntent.launchUrl(it, Uri.parse(url)) }
+//
+//    }
 }

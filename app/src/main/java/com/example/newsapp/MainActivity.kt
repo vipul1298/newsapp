@@ -3,6 +3,9 @@ package com.example.newsapp
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -26,11 +29,13 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        val newsRepository = NewsRepository(ArticleDatabase(this))
-        val viewModelProviderFactory = NewsViewModelProviderFactory(application,newsRepository)
+        val newsRepository = NewsRepository(ArticleDatabase(this),this)
+        val viewModelProviderFactory = NewsViewModelProviderFactory(newsRepository)
         viewModel = ViewModelProvider(this,viewModelProviderFactory).get(NewsViewModel::class.java)
 
 
         bottomNavigationView.setupWithNavController(newsNavHostFragment.findNavController()) // controller for bottom navigaton using navigation component
     }
+
+
 }

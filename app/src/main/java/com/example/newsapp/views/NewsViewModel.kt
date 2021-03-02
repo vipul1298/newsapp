@@ -21,9 +21,8 @@ import java.io.IOException
 
 // viewmodel to handle the data source which will be reflected to Ui
 class NewsViewModel(
-        app : NewsApplication,
-        val newsRepository : NewsRepository
-) : AndroidViewModel(app) {
+    private val newsRepository : NewsRepository
+) : ViewModel() {
     val topHeadlines : MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     val sources : MutableLiveData<Resource<SourceModel>> = MutableLiveData()
     val searchNews : MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
@@ -81,7 +80,7 @@ class NewsViewModel(
     private suspend fun safeTopHeadlinesCall(countryCode: String){
         topHeadlines.postValue(Resource.Loading())
         try {
-            if(hasInternetConnection()){
+            if(newsRepository.hasInternetConnection()){
                 val response =  newsRepository.getTopHeadlines(countryCode,topHeadlinesPage)
                 topHeadlines.postValue(handleTopHeadlinewsResponse(response))
             }else{
@@ -99,7 +98,7 @@ class NewsViewModel(
     private suspend fun safeSourcesCall(){
         sources.postValue(Resource.Loading())
         try {
-            if(hasInternetConnection()){
+            if(newsRepository.hasInternetConnection()){
                 val response =  newsRepository.getSources(sourcesPage)
                 sources.postValue(handleSourcesResponse(response))
             }else{
@@ -117,7 +116,7 @@ class NewsViewModel(
     private suspend fun safeSearchNewsCall(searchQuery: String){
         searchNews.postValue(Resource.Loading())
         try {
-            if(hasInternetConnection()){
+            if(newsRepository.hasInternetConnection()){
                 val response =  newsRepository.searchNews(searchQuery,searchNewsPage)
                 searchNews.postValue(handleSearchNewsResponse(response))
             }else{
@@ -132,33 +131,7 @@ class NewsViewModel(
         }
     }
 
-    // Network Connectivity Check
 
-    private fun hasInternetConnection() :Boolean {
-        val connectivityManager = getApplication<NewsApplication>().getSystemService(
-                Context.CONNECTIVITY_SERVICE
-        ) as ConnectivityManager
 
-        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.M){
-            val activeNetwork = connectivityManager.activeNetwork?: return false
-            val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork)?: return false
-            return when {
-                capabilities.hasTransport(TRANSPORT_WIFI) -> true
-                capabilities.hasTransport(TRANSPORT_CELLULAR) -> true
-                capabilities.hasTransport(TRANSPORT_ETHERNET) -> true
-                else -> false
-            }
-        }else{
-            connectivityManager.activeNetworkInfo?.run {
-                return when(type) {
-                    TYPE_WIFI -> true
-                    TYPE_MOBILE -> true
-                    TYPE_ETHERNET -> true
-                    else -> false
-                }
-            }
-        }
-        return false
-    }
 
 }
